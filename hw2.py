@@ -156,7 +156,7 @@ def write_csv(stat: dict, file_name='./Dep_Stat.csv'):
             out_file.writerow(row)
 
 
-if __name__ == "main":
+if __name__ == '__main__':
     # Обработка данных
     headers, data = preprocess_csv()
     dep_col_index = headers.index('Департамент')
@@ -186,7 +186,7 @@ if __name__ == "main":
 
     command = ''
     while command not in commands:
-        command = input('Введите название команды: ').lower()
+        command = input('\nВведите название команды: ').lower()
         if command == exit_command:
             break
         elif command == hierarchy_command:
