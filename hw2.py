@@ -164,29 +164,30 @@ if __name__ == '__main__':
     salary_col_index = headers.index('Оклад')
 
     # Названия команд
-    hierarchy_command = 'иерархия'
-    report_command = 'отчет'
-    save_command = 'сохранить'
-    exit_command = 'выйти'
+    hierarchy_command = '1'
+    report_command = '2'
+    save_command = '3'
+    exit_command = '4'
 
     # Описание команд
     commands = {
-        hierarchy_command: 'выводит иерархию команд '
+        hierarchy_command: 'Иерархия: выводит иерархию команд '
                            'внутри выбранного департамента',
-        report_command: 'выводит  название, численность и интервал зарплат '
-                        'по каждому департаменту',
-        save_command: 'сохраняет сводный отчет',
-        exit_command: 'выходит из программы'
+        report_command: 'Отчет: выводит  название, численность '
+                        'и интервал зарплат по каждому департаменту',
+        save_command: 'Cохранить: сохраняет сводный отчет',
+        exit_command: 'Выйти: выходит из программы'
     }
 
     # Вывод и работа в консоли
     print('СПИСОК КОМАНД:')
-    for command, description in commands.items():
-        print(f'{command.capitalize()}: {description}')
+    commands = {n: d for n, d in sorted(commands.items(), key=lambda x: x[0])}
+    for num, description in commands.items():
+        print(f'{num}. {description}')
 
     command = ''
     while command not in commands:
-        command = input('\nВведите название команды: ').lower()
+        command = input('\nВведите номер команды: ')
         if command == exit_command:
             break
         elif command == hierarchy_command:
