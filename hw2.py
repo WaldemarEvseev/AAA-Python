@@ -2,10 +2,20 @@ import csv
 import math
 from collections import defaultdict
 
+# Названия команд
+HIERARCHY_COMMAND = '1'
+REPORT_COMMAND = '2'
+SAVE_COMMAND = '3'
+EXIT_COMMAND = '4'
+
 
 # Предварительная обработка данных
 def preprocess_csv(file_name='Corp_Summary.csv', encoding_type='utf-8') -> (list, list):
-    """Возвращает исходные данные с правильной кодировкой"""
+    """
+    Возвращает исходные данные с правильной кодировкой
+    headers = заголовок таблицы
+    data = значения таблицы
+    """
     data = []
     with open(file_name, 'r', encoding=encoding_type) as f:
         f = f.read().split('\n')
@@ -21,7 +31,7 @@ def get_hierarchy(data: list, dep_col_index: int, team_col_index: int) -> dict:
     """
     Возвращает иерахию в формате словаря
     ключ = департамент
-    значение = список отделов
+    значение = множество отделов для одного департамента
     """
     hierarchy = {}
     for item in data:
@@ -38,16 +48,13 @@ def get_hierarchy(data: list, dep_col_index: int, team_col_index: int) -> dict:
 def print_hierarchy(hierarchy: dict):
     """Выводит в консоль иерархию для выбранного департамента"""
     dep = ''
+    print(f'Список департаментов: {", ".join(hierarchy.keys())}')
     while dep not in hierarchy:
-        if command == exit_command:
-            break
         dep = input('Введите название департамента: ').lower()
 
-    print('-' * 120)
     print(f'В департамент "{dep.capitalize()}" входит:')
     for team in hierarchy[dep]:
         print(f'- Отдел "{team}"')
-    print('-' * 120)
 
 
 # ЗАДАНИЕ №2
@@ -132,11 +139,10 @@ def print_table(table: list, width_setting: list, col_width=23):
             space = max(width_setting[i] - len(value), col_width - len(value))
             row = f'{row}{value}{" "*space}'
         print(row)
-    print('-' * 120)
 
 
 # ЗАДАНИЕ №3
-def write_csv(stat: dict, file_name='./Dep_Stat.csv'):
+def write_csv(stat: dict, file_name: str):
     """Записывает статистику по департаментам в формате csv"""
     headers = []
     headers.append('Название департамента')
@@ -163,20 +169,14 @@ if __name__ == '__main__':
     team_col_index = headers.index('Отдел')
     salary_col_index = headers.index('Оклад')
 
-    # Названия команд
-    hierarchy_command = '1'
-    report_command = '2'
-    save_command = '3'
-    exit_command = '4'
-
     # Описание команд
     commands = {
-        hierarchy_command: 'Иерархия: выводит иерархию команд '
+        HIERARCHY_COMMAND: 'Иерархия: выводит иерархию команд '
                            'внутри выбранного департамента',
-        report_command: 'Отчет: выводит  название, численность '
+        REPORT_COMMAND: 'Отчет: выводит  название, численность '
                         'и интервал зарплат по каждому департаменту',
-        save_command: 'Cохранить: сохраняет сводный отчет',
-        exit_command: 'Выйти: выходит из программы'
+        SAVE_COMMAND: 'Cохранить: сохраняет сводный отчет',
+        EXIT_COMMAND: 'Выйти: выходит из программы'
     }
 
     # Вывод и работа в консоли
@@ -188,17 +188,16 @@ if __name__ == '__main__':
     command = ''
     while command not in commands:
         command = input('\nВведите номер команды: ')
-        if command == exit_command:
+        if command == EXIT_COMMAND:
             break
-        elif command == hierarchy_command:
+        elif command == HIERARCHY_COMMAND:
             hierarchy = get_hierarchy(data, dep_col_index, team_col_index)
             print_hierarchy(hierarchy)
-        elif command == report_command:
+        elif command == REPORT_COMMAND:
             stat = get_stat(data, dep_col_index, salary_col_index)
             table, width_setting = prepare_stat_table(stat)
             print_table(table, width_setting)
-        elif command == save_command:
+        elif command == SAVE_COMMAND:
             stat = get_stat(data, dep_col_index, salary_col_index)
-            write_csv(stat)
+            write_csv(stat, './Stat.csv')
             print('Запись выполнена')
-            print('-' * 120)
