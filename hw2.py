@@ -8,9 +8,13 @@ REPORT_COMMAND = '2'
 SAVE_COMMAND = '3'
 EXIT_COMMAND = '4'
 
+# Название файлов
+INPUT_FILE_NAME = 'Corp_Summary.csv'
+OUTPUT_PATH = './Stat.csv'
+
 
 # Предварительная обработка данных
-def preprocess_csv(file_name='Corp_Summary.csv', encoding_type='utf-8') -> (list, list):
+def preprocess_csv(file_name, encoding_type='utf-8') -> (list, list):
     """
     Возвращает исходные данные с правильной кодировкой
     headers = заголовок таблицы
@@ -47,14 +51,25 @@ def get_hierarchy(data: list, dep_col_index: int, team_col_index: int) -> dict:
 
 def print_hierarchy(hierarchy: dict):
     """Выводит в консоль иерархию для выбранного департамента"""
-    dep = ''
-    print(f'Список департаментов: {", ".join(hierarchy.keys())}')
-    while dep not in hierarchy:
-        dep = input('Введите название департамента: ').lower()
+    print(f'Департаменты:')
+    commands = [dep for dep in hierarchy]
+    commands.append('Все')
+    for i, dep in enumerate(commands):
+        print(f'{i + 1}. {dep.capitalize()}')
 
-    print(f'В департамент "{dep.capitalize()}" входит:')
-    for team in hierarchy[dep]:
-        print(f'- Отдел "{team}"')
+    num = None
+    while num not in range(len(commands)):
+        num = int(input('Введите номер команды: ')) - 1
+
+    if commands[num] == 'Все':
+        commands.pop(num)
+    else:
+        commands = [commands[num]]
+
+    for dep in commands:
+        print(f'В департамент "{dep.capitalize()}" входит:')
+        for team in hierarchy[dep]:
+            print(f'- Отдел "{team}"')
 
 
 # ЗАДАНИЕ №2
@@ -164,7 +179,7 @@ def write_csv(stat: dict, file_name: str):
 
 if __name__ == '__main__':
     # Обработка данных
-    headers, data = preprocess_csv()
+    headers, data = preprocess_csv(INPUT_FILE_NAME)
     dep_col_index = headers.index('Департамент')
     team_col_index = headers.index('Отдел')
     salary_col_index = headers.index('Оклад')
@@ -199,5 +214,5 @@ if __name__ == '__main__':
             print_table(table, width_setting)
         elif command == SAVE_COMMAND:
             stat = get_stat(data, dep_col_index, salary_col_index)
-            write_csv(stat, './Stat.csv')
+            write_csv(stat, OUTPUT_PATH)
             print('Запись выполнена')
