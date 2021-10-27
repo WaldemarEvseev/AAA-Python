@@ -27,8 +27,11 @@ class CountVectorizer():
         counter_list = [0 for seq in corpus]
         token_counts = defaultdict(lambda: counter_list.copy())
         for i, sentence in enumerate(corpus):
-            seq = str(sentence).lower() if self.lowercase else str(sentence)
-            tokens = re.findall(self.token_pattern, seq)
+            if isinstance(sentence, str):
+                sentence = sentence.lower() if self.lowercase else sentence
+            else:
+                continue
+            tokens = re.findall(self.token_pattern, sentence)
             for token in tokens:
                 token_counts[token][i] += 1
 
@@ -49,7 +52,7 @@ if __name__ == "__main__":
                          'pomodoro', 'fresh', 'ingredients', 'parmesan',
                          'to', 'taste']
     true_count_matrix = [[1, 1, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-                        [0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1]]
+                         [0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1]]
 
     assert vectorizer.get_feature_names() == true_feature_name
     assert count_matrix == true_count_matrix
