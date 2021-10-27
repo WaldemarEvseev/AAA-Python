@@ -21,23 +21,20 @@ class CountVectorizer():
     def fit_transform(self, corpus: list) -> list:
         """Return a document-term matrix"""
         if not isinstance(corpus, list):
-            raise Exception("Corpus isn't a list")
+            print("Corpus isn't a list")
+            return self.term_matrix
 
-        token_counts = defaultdict(lambda: [0 for seq in corpus])
-        if self.lowercase:
-            for i, seq in enumerate(corpus):
-                tokens = re.findall(self.token_pattern, str(seq).lower())
-                for token in tokens:
-                    token_counts[token][i] += 1
-        else:
-            for i, seq in enumerate(corpus):
-                tokens = re.findall(self.token_pattern, str(seq))
-                for token in tokens:
-                    token_counts[token][i] += 1
+        counter_list = [0 for seq in corpus]
+        token_counts = defaultdict(lambda: counter_list.copy())
+        for i, sentence in enumerate(corpus):
+            seq = str(sentence).lower() if self.lowercase else str(sentence)
+            tokens = re.findall(self.token_pattern, seq)
+            for token in tokens:
+                token_counts[token][i] += 1
 
-        self.feature_names = [token for token in token_counts.keys()]
+        self.feature_names = list(token_counts.keys())
         self.term_matrix = [[token_counts[f][i] for f in self.feature_names]
-                            for i, seq in enumerate(corpus)]
+                            for i, sentence in enumerate(corpus)]
         return self.term_matrix
 
 
@@ -51,21 +48,18 @@ if __name__ == "__main__":
     true_feature_name = ['crock', 'pot', 'pasta', 'never', 'boil', 'again',
                          'pomodoro', 'fresh', 'ingredients', 'parmesan',
                          'to', 'taste']
-    true_term_matrix = [[1, 1, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+    true_count_matrix = [[1, 1, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0],
                         [0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1]]
 
     assert vectorizer.get_feature_names() == true_feature_name
-    assert count_matrix == true_term_matrix
+    assert count_matrix == true_count_matrix
 
     # Corpus isn't a list
     print('Test for inappropriate types of corpus')
     test_sample = ["I'm not a list", 123, ("I'm not a list", "Hello, corpus")]
     for false_corpus in test_sample:
         vectorizer = CountVectorizer()
-        try:
-            vectorizer.fit_transform(false_corpus)
-        except Exception as e:
-            print(e)
+        count_matrix = vectorizer.fit_transform(false_corpus)
 
     # Empty corpus
     print('\nTest for an empty corpus')
