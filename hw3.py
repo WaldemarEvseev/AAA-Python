@@ -24,7 +24,7 @@ class CountVectorizer():
             print("Corpus isn't a list")
             return self.term_matrix
 
-        counter_list = [0 for seq in corpus]
+        counter_list = [0] * len(corpus)
         token_counts = defaultdict(lambda: counter_list.copy())
         for i, sentence in enumerate(corpus):
             if isinstance(sentence, str):
@@ -44,13 +44,13 @@ class CountVectorizer():
 if __name__ == "__main__":
     # TEST
     # Test from the task
-    corpus = ['Crock Pot Pasta Never boil pasta again',
-              'Pasta Pomodoro Fresh ingredients Parmesan to taste']
+    corpus = ["Crock Pot Pasta Never boil pasta again",
+              "Pasta Pomodoro Fresh ingredients Parmesan to taste"]
     vectorizer = CountVectorizer()
     count_matrix = vectorizer.fit_transform(corpus)
-    true_feature_name = ['crock', 'pot', 'pasta', 'never', 'boil', 'again',
-                         'pomodoro', 'fresh', 'ingredients', 'parmesan',
-                         'to', 'taste']
+    true_feature_name = ["crock", "pot", "pasta", "never", "boil", "again",
+                         "pomodoro", "fresh", "ingredients", "parmesan",
+                         "to", "taste"]
     true_count_matrix = [[1, 1, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0],
                          [0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1]]
 
@@ -58,14 +58,14 @@ if __name__ == "__main__":
     assert count_matrix == true_count_matrix
 
     # Corpus isn't a list
-    print('Test for inappropriate types of corpus')
+    print("Test for inappropriate types of corpus")
     test_sample = ["I'm not a list", 123, ("I'm not a list", "Hello, corpus")]
     for false_corpus in test_sample:
         vectorizer = CountVectorizer()
         count_matrix = vectorizer.fit_transform(false_corpus)
 
     # Empty corpus
-    print('\nTest for an empty corpus')
+    print("\nTest for an empty corpus")
     corpus = []
     vectorizer = CountVectorizer()
     count_matrix = vectorizer.fit_transform(corpus)
@@ -73,9 +73,9 @@ if __name__ == "__main__":
     print(count_matrix)
 
     # Test for lowercase
-    print('\nTest for lowercase=False')
-    corpus = ['Crock Pot Pasta Never boil pasta again',
-              'Pasta Pomodoro Fresh ingredients Parmesan to taste']
+    print("\nTest for lowercase=False")
+    corpus = ["Crock Pot Pasta Never boil pasta again",
+              "Pasta Pomodoro Fresh ingredients Parmesan to taste"]
     vectorizer = CountVectorizer(lowercase=False)
     count_matrix = vectorizer.fit_transform(corpus)
     print(vectorizer.get_feature_names())
