@@ -7,6 +7,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 def doctest_encode(message: str) -> str:
     """
+    Проверяет функцию encode из morse.py
+    с помощью тестов, заданных в docstring
     >>> doctest_encode('SOS')
     '... --- ...'
     >>> doctest_encode('sos') # doctest: +ELLIPSIS
