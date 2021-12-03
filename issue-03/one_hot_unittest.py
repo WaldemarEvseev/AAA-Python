@@ -1,8 +1,8 @@
-from one_hot_encoder import fit_transform
 import os
 import sys
 import unittest
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from one_hot_encoder import fit_transform
 
 
 class TestOneHotEncoder(unittest.TestCase):

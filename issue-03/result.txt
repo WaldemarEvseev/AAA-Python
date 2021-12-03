@@ -1,0 +1,14 @@
+D:\Learning\AAA\01 Python\Homework\AAA-Python.git>python ./issue-03/one_hot_unittest.py
+...F
+======================================================================
+FAIL: test_number (__main__.TestOneHotEncoder)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "./issue-03/one_hot_unittest.py", line 42, in test_number
+    self.assertTrue(res_len == exp_len)
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+FAILED (failures=1)

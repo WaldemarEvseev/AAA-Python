@@ -1,0 +1,59 @@
+============================= test session starts =============================
+platform win32 -- Python 3.7.6, pytest-5.3.5, py-1.8.1, pluggy-0.13.1
+rootdir: D:\Learning\AAA\01 Python\Homework\AAA-Python.git
+plugins: hypothesis-5.5.4, arraydiff-0.3, astropy-header-0.1.2, doctestplus-0.5.0, openfiles-0.4.0, remotedata-0.3.2
+collected 3 items
+
+issue-02\morse_test.py .FF                                               [100%]
+
+================================== FAILURES ===================================
+________________________ test_decode[... --- ...-sos] _________________________
+
+morse_message = '... --- ...', exp = 'sos'
+
+    @pytest.mark.parametrize('morse_message, exp', [
+        ('... --- ...', 'SOS'),
+        ('... --- ...', 'sos'),
+        ('...---...', 'SOS')
+    ])
+    def test_decode(morse_message: str, exp: str):
+        """
+        Проверяет функцию decode из morse.py
+        с помощью тестов, заданных через декоратор
+        """
+>       assert morse.decode(morse_message) == exp
+E       AssertionError: assert 'SOS' == 'sos'
+E         - SOS
+E         + sos
+
+issue-02\morse_test.py:18: AssertionError
+_________________________ test_decode[...---...-SOS] __________________________
+
+morse_message = '...---...', exp = 'SOS'
+
+    @pytest.mark.parametrize('morse_message, exp', [
+        ('... --- ...', 'SOS'),
+        ('... --- ...', 'sos'),
+        ('...---...', 'SOS')
+    ])
+    def test_decode(morse_message: str, exp: str):
+        """
+        Проверяет функцию decode из morse.py
+        с помощью тестов, заданных через декоратор
+        """
+>       assert morse.decode(morse_message) == exp
+
+issue-02\morse_test.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+morse.py:43: in decode
+    MORSE_TO_LETTER[letter] for letter in morse_message.split()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+.0 = <list_iterator object at 0x00000215D3F3E508>
+
+>       MORSE_TO_LETTER[letter] for letter in morse_message.split()
+    ]
+E   KeyError: '...---...'
+
+morse.py:43: KeyError
+========================= 2 failed, 1 passed in 1.77s =========================

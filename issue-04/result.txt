@@ -1,0 +1,25 @@
+============================= test session starts =============================
+platform win32 -- Python 3.7.6, pytest-5.3.5, py-1.8.1, pluggy-0.13.1
+rootdir: D:\Learning\AAA\01 Python\Homework\AAA-Python.git
+plugins: hypothesis-5.5.4, arraydiff-0.3, astropy-header-0.1.2, doctestplus-0.5.0, openfiles-0.4.0, remotedata-0.3.2
+collected 4 items
+
+issue-04\one_hot_test.py ...F                                            [100%]
+
+================================== FAILURES ===================================
+_________________________________ test_number _________________________________
+
+    def test_number():
+        """
+        Тестирует результат ввода одного числового элемента разных типов
+        через длину бинарного представления (код должен состоять из одного элемент)
+        """
+        number = ['1', 1, 1.000]
+        exp_len = 1
+        res_len = len(fit_transform(number)[0][1])
+>       assert bool(res_len == exp_len)
+E       assert False
+E        +  where False = bool(2 == 1)
+
+issue-04\one_hot_test.py:40: AssertionError
+========================= 1 failed, 3 passed in 0.10s =========================

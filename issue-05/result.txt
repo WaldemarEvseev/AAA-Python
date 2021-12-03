@@ -1,0 +1,9 @@
+============================= test session starts =============================
+platform win32 -- Python 3.7.6, pytest-5.3.5, py-1.8.1, pluggy-0.13.1
+rootdir: D:\Learning\AAA\01 Python\Homework\AAA-Python.git
+plugins: hypothesis-5.5.4, arraydiff-0.3, astropy-header-0.1.2, doctestplus-0.5.0, openfiles-0.4.0, remotedata-0.3.2
+collected 3 items
+
+issue-05\what_is_year_test.py ...                                        [100%]
+
+============================== 3 passed in 1.81s ==============================

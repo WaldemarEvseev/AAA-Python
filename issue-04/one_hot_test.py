@@ -38,4 +38,3 @@ def test_number():
     exp_len = 1
     res_len = len(fit_transform(number)[0][1])
     assert bool(res_len == exp_len)
-
