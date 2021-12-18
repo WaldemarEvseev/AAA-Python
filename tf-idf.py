@@ -8,7 +8,7 @@ class CountVectorizer:
 
     def __init__(self,
                  lowercase=True,
-                 token_pattern=r"[\w\d\-]+"):
+                 token_pattern=r'[\w\d\-]+'):
 
         self.lowercase = lowercase
         self.token_pattern = token_pattern
@@ -22,7 +22,6 @@ class CountVectorizer:
     def fit_transform(self, corpus: list) -> list:
         """Return a document-term matrix"""
         if not isinstance(corpus, list):
-            print("Corpus isn't a list")
             return self.term_matrix
 
         counter_list = [0] * len(corpus)
@@ -102,7 +101,3 @@ if __name__ == '__main__':
     true_tfidf_matrix = [[0.2, 0.2, 0.286, 0.2, 0.2, 0.2, 0, 0, 0, 0, 0, 0],
                          [0, 0, 0.143, 0, 0, 0, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2]]
     assert tfidf_matrix == true_tfidf_matrix
-
-
-
-
