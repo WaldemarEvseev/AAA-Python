@@ -44,7 +44,8 @@ class Margherita(Pizza):
                        'mozzarella ': (125, 'g'),
                        'tomatoes': (1, '')}
 
-    def dict(self):
+    def dict(self) -> Dict[str, Tuple[int, str]]:
+        """Выводит рецепт в зависимости от размера блюда"""
         return get_recipe(self.recipe, self.size, self.mult_dict)
 
 
@@ -56,7 +57,8 @@ class Pepperoni(Pizza):
                        'mozzarella ': (125, 'g'),
                        'pepperoni': (200, 'g')}
 
-    def dict(self):
+    def dict(self) -> Dict[str, Tuple[int, str]]:
+        """Выводит рецепт в зависимости от размера блюда"""
         return get_recipe(self.recipe, self.size, self.mult_dict)
 
 
@@ -69,7 +71,8 @@ class Hawaiian(Pizza):
                        'chicken ': (250, 'g'),
                        'pineapples': (1, '')}
 
-    def dict(self):
+    def dict(self) -> Dict[str, Tuple[int, str]]:
+        """Выводит рецепт в зависимости от размера блюда"""
         return get_recipe(self.recipe, self.size, self.mult_dict)
 
 
