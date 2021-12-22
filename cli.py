@@ -7,8 +7,12 @@ from typing import Callable, Dict, Tuple
 # Описание рецептов классами
 class Pizza(abc.ABC):
     def __init__(self, size: str = 'L'):
-        if size in ('L', 'XL'):
-            self.size = size
+        # Словарь размеров блюд
+        # и мультипликаторов для количества ингредиентов
+        self.mult_dict = {'L': 1, 'XL': 2}
+
+        if size.upper() in self.mult_dict.keys():
+            self.size = size.upper()
         else:
             raise ValueError("Неверный размер пицц")
 
@@ -22,13 +26,14 @@ class Pizza(abc.ABC):
         return False
 
 
-def get_recipe(recipe: dict, size: str, x: int) -> Dict[str, Tuple[int, str]]:
+def get_recipe(recipe: dict,
+               size: str,
+               mult_dict: Dict[str, int]) -> Dict[str, Tuple[int, str]]:
+
     """Выводит рецепт в зависимости от размера блюда"""
-    if size == 'L':
-        return recipe
-    elif size == 'XL':
-        return {ingredient: (x * param[0], param[1]) for ingredient, param
-                in recipe.items()}
+    x = mult_dict[size]
+    return {ingredient: (x * params[0], params[1]) for ingredient, params
+            in recipe.items()}
 
 
 class Margherita(Pizza):
@@ -40,7 +45,7 @@ class Margherita(Pizza):
                        'tomatoes': (1, '')}
 
     def dict(self):
-        return get_recipe(self.recipe, self.size, 2)
+        return get_recipe(self.recipe, self.size, self.mult_dict)
 
 
 class Pepperoni(Pizza):
@@ -52,7 +57,7 @@ class Pepperoni(Pizza):
                        'pepperoni': (200, 'g')}
 
     def dict(self):
-        return get_recipe(self.recipe, self.size, 3)
+        return get_recipe(self.recipe, self.size, self.mult_dict)
 
 
 class Hawaiian(Pizza):
@@ -65,26 +70,22 @@ class Hawaiian(Pizza):
                        'pineapples': (1, '')}
 
     def dict(self):
-        return get_recipe(self.recipe, self.size, 2)
+        return get_recipe(self.recipe, self.size, self.mult_dict)
 
 
 # Функции для вывода статуса заказа
-def log(pattern: str) -> Callable:
+def log(pattern) -> Callable:
     """Выводит имя функции и время выполнения"""
     def decorator(function: Callable) -> Callable:
         def wrapper(*args, **kwargs):
             time = randint(1, 100)
-            if pattern:
-                answer = pattern.format(time)
-            else:
-                func_name = function(*args, **kwargs).__name__
-                answer = f'{func_name} - {time}с!'
+            answer = pattern.format(time)
             print(answer)
         return wrapper
     return decorator
 
 
-@log
+@log('bake — {}с!')
 def bake(pizza: Pizza):
     """Готовит пиццу"""
 
@@ -106,7 +107,7 @@ def cli():
 
 
 @cli.command()
-@click.option(' =delivery', default=False, is_flag=True)
+@click.option(' =delivery', 'with_delivery', default=False, is_flag=True)
 @click.argument('pizza', nargs=1)
 def order(pizza: Pizza, with_delivery: bool):
     """Готовит и доставляет пиццу"""
@@ -122,10 +123,8 @@ def menu():
     """Выводит меню"""
     for cl in (Margherita(), Pepperoni(), Hawaiian()):
         ingredients = ', '.join(cl.dict().keys())
-        print(f'- {cl.__name__} {cl.icon}: {ingredients}')
+        print(f'- {cl.__class__.__name__} {cl.icon}: {ingredients}')
 
 
 if __name__ == '__main__':
     cli()
-    delivery(Margherita())
-    bake(Margherita())
