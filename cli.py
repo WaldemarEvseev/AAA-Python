@@ -110,7 +110,7 @@ def cli():
 
 
 @cli.command()
-@click.option(' =delivery', 'with_delivery', default=False, is_flag=True)
+@click.option('--delivery', 'with_delivery', default=False, is_flag=True)
 @click.argument('pizza', nargs=1)
 def order(pizza: Pizza, with_delivery: bool):
     """Готовит и доставляет пиццу"""
