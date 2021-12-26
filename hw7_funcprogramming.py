@@ -1,13 +1,15 @@
-from typing import Callable, Generator, Sequence, Union
+from typing import Callable, Generator, Sequence, Union, TypeVar
 from itertools import islice
+
+T = TypeVar('T')
 
 
 class Seq:
-    def __init__(self, sequence: Union[Sequence, Generator]):
+    def __init__(self, sequence: Union[Sequence[T], Generator]):
         self.seq = sequence
 
     @staticmethod
-    def _map(sequence: Union[Sequence, Generator],
+    def _map(sequence: Union[Sequence[T], Generator],
              func: Callable) -> Generator:
         """Создает генератор для метода map"""
         for t in sequence:
@@ -22,7 +24,7 @@ class Seq:
         return self.__class__(self._map(self.seq, func))
 
     @staticmethod
-    def _filter(sequence: Union[Sequence, Generator],
+    def _filter(sequence: Union[Sequence[T], Generator],
                 func: Callable) -> Generator:
         """Создает генератор для метода filter"""
         for t in sequence:
