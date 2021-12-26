@@ -1,29 +1,46 @@
-from typing import Callable
+from typing import Callable, Generator, Sequence, Union
 from itertools import islice
 
 
 class Seq:
-    def __init__(self, sequence):
+    def __init__(self, sequence: Union[Sequence, Generator]):
         self.seq = sequence
 
     @staticmethod
-    def _map(sequence, func):
+    def _map(sequence: Union[Sequence, Generator],
+             func: Callable) -> Generator:
+        """Создает генератор для метода map"""
         for t in sequence:
             yield func(t)
 
     def map(self, func: Callable):
+        """
+        Принимает функцию, которая будет трансформировать тип Т
+        (тот который внутри последовательности, которую передали в инит)
+        в любой тип.
+        """
         return self.__class__(self._map(self.seq, func))
 
     @staticmethod
-    def _filter(sequence, func: Callable):
+    def _filter(sequence: Union[Sequence, Generator],
+                func: Callable) -> Generator:
+        """Создает генератор для метода filter"""
         for t in sequence:
             if func(t):
                 yield t
 
     def filter(self, func: Callable):
+        """
+        Принимает функцию, которая входным параметром принимает тип T
+        и возвращает bool
+        """
         return self.__class__(self._filter(self.seq, func))
 
     def take(self, num: int):
+        """
+        Принимает число и возвращает список
+        из того количества элементов, которое передали в take
+        """
         return list(islice(self.seq, num))
 
 
